@@ -1,0 +1,211 @@
+#Config file sample for more information take a look at :
+#http://beets.readthedocs.io/en/v1.3.17/reference/config.html
+
+#######################
+## Global Config     ##
+#######################
+
+library:      /mnt/data/Media/Music/.beet.db
+directory:    /mnt/data/Media/Music
+threaded:     yes
+ignore:       .AppleDouble ._* *~ .DS_Store .git _gsdata_ Thumbs.db 
+clutter:      ['Thumbs.db', '.DS_Store', '*.txt','*.m3u', '*.sfv', '*.jpg', '*.jpeg', '*.png', '*.pdf']
+statefile:    /home/torrent/.config/beets/state.pickle
+#######################
+## Import Config     ##
+#######################
+import: 
+  write:              yes
+  copy:               yes
+  move:               no
+  link:               no
+  resume:             yes
+  incremental:        no
+  quiet:              no
+  quiet_fallback:     asis
+  none_rec_action:    ask
+  duplicate_action:   remove
+  timid:              no
+  log:                /var/log/beets.log
+  default_action:     apply
+  languages:          ['en']
+  detail:             no
+  group_albums:       no
+  autotag:            yes
+
+va_name: "Various Artists"
+
+#######################
+## Path & Template   ##
+#######################
+
+asciify_paths:          yes
+art_filename:           cover
+original_date:          yes
+per_disc_numbering:     yes
+
+replace:
+  '[\\/]': _
+  '^\.': _
+  '[\x00-\x1f]': _
+  '[<>:"\?\*\|]': ''
+  '\.$': _
+  '\s+$': ''
+  '^\s+': ''
+  ',': ''
+
+paths:
+  default: $artist_fallback [$fixedyear] $album/%if{$multidisc,$disc.}$track - $title
+  albumtype:single: $artist_fallback [$fixedyear] $album [Single]/%if{$multidisc,$disc.}$track - $title
+  albumtype:ep: $artist_fallback [$fixedyear] $album%if{$ep_not_in_title, [EP]}/%if{$multidisc,$disc.}$track - $title
+  albumtype:live: $artist_fallback [$fixedyear] $album [Live]/%if{$multidisc,$disc.}$track - $title
+  albumtype:bootleg: $artist_fallback [$fixedyear] $album [Bootleg]/%if{$multidisc,$disc.}$track - $title
+  albumtype:soundtrack: $artist_fallback [$fixedyear] $album [Soundtrack]/%if{$multidisc,$disc.}$track - $title - $artist
+  singleton: $artist_fallback [$fixedyear] $album [Single]/%if{$multidisc,$disc.}$track - $title - $artist
+  comp: $albumartist [$fixedyear] $album/%if{$multidisc,$disc.}$track - $title - $artist
+  ext:log: $albumpath/$albumartist $album
+  ext:cue: $albumpath/$albumartist $album
+  ext:nfo: $albumpath/$albumartist $album
+  #ext:png: $albumpath/cover
+  #ext:jpg: $albumpath/cover
+  #ext:jpeg: $albumpath/cover
+
+item_fields:
+  artist_fallback: albumartist if albumartist else artist
+  first_album_artist: albumartist.split(';')[0] if albumartist else artist.split(';')[0]  
+  fixedyear: original_year if original_year else year
+
+album_fields:
+  multidisc: |
+    disc_numbers = {}
+    for item in items:
+      disc_numbers[item.disc] = None
+    if len(disc_numbers) > 1:
+      return 1
+    else:
+      return 0
+
+  ep_not_in_title: |
+    import re
+    if re.search(r"\bE\.?P\b", album):
+      return 0
+    else:
+      return 1
+
+#######################
+## MusicBrainz       ##
+## & Matching        ##
+#######################
+
+#musicbrainz:
+#  host: musicbrainz.fin-alice.de:5000
+#  ratelimit: 1
+
+match:
+  strong_rec_thresh: 0.15
+#  max_rec:
+#    missing_tracks: medium
+#    unmatched_tracks: medium
+
+#######################
+## UI Color          ##
+#######################
+ui:
+    color: yes
+    colors:
+        text_success: green
+        text_warning: yellow
+        text_error: red
+        text_highlight: red
+        text_highlight_minor: lightgray
+        action_default: turquoise
+        action: blue
+
+#######################
+## Plugins           ##
+#######################
+  
+## Enabled Plugins :
+plugins: 
+  - chroma
+  - fromfilename
+  - acousticbrainz
+  - discogs
+  - embedart
+  - fetchart
+  - copyartifacts
+  #- lastgenre
+  - inline
+  - zero
+  #- web
+  - replaygain
+  - permissions
+  - convert
+
+## Plugins Configuration :
+
+chroma:
+  auto: yes
+acoustid:
+  apikey: CHANGE_ME
+
+
+#acousticbrainz:
+#  auto: yes
+
+embedart:
+  auto: yes
+  compare_threshold: 0
+  ifempty: no
+  maxwidth: 500
+  remove_art_file: no
+
+fetchart:
+  auto: yes
+  cautious: yes
+  cover_names: cover front art album folder
+  minwidth: 500
+  maxwidth: 500
+  enforce_ratio: no
+  sources: filesystem coverart itunes amazon albumart
+
+lastgenre:
+  auto: yes
+  source: album
+
+replaygain:
+  backend: gstreamer
+  auto: yes
+  overwrite: no
+
+zero:
+  fields: month day comments
+  comments: [EAC, LAME, from.+collection, 'ripped by']
+  update_database: false
+
+copyartifacts:
+  extensions: .cue .log .nfo #.jpg .png .jpeg
+  print_ignored: yes
+
+permissions:
+    file: 664
+    dir: 775
+
+convert:
+  auto: no
+  tmpdir: /tmp
+  embed: yes
+  max_bitrate: no
+  never_convert_lossy_files: yes
+  quiet: yes
+  format: mp3
+  formats:
+    mp3:
+      command: ffmpeg -i $source -y -vn -q:a 2 -acodec libmp3lame $dest
+      extension: mp3
+      dest: /mnt/data/Media/Music/MP3
+    opus:
+      command: ffmpeg -i $source -y -vn -b:a 128000 -vbr on -compression_level 10 -acodec libopus $dest 
+      extension: opus
+      dest: /mnt/data/Media/Music/OPUS
+

@@ -1,0 +1,3 @@
+[submodule "vim/bundle/vim-Grammalecte"]
+	path = vim/bundle/vim-Grammalecte
+	url = https://github.com/dpelle/vim-Grammalecte.git
