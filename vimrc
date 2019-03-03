@@ -1,11 +1,11 @@
 " Manage Vim plugin with Pathogen
-execute pathogen#infect()
-Helptags
+"execute pathogen#infect()
+"Helptags
 
 " Use Vim settings, rather than Vi settings (must be first!)
 set nocompatible
 
-" Set the shell to bash
+" Set the shell to bash/zsh/ ...etc
 set shell=/bin/zsh
 
 " Make backspace behave in a sane manner
@@ -53,6 +53,11 @@ set hlsearch
 " Set up our status line
 set laststatus=2
 let &statusline='[%n] %<%f%{&mod?"[+]":""}%r%{&fenc !~ "^$\\|utf-8" || &bomb ? "[".&fenc.(&bomb?"-bom":"")."]" : ""}%=%15.(%l,%c%V   %P%)'
+
+" Remember last position when re-open
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
 
 " Use the "desert" colorscheme with a dark background by default, but use the
 " wombat or solarized schemes if we have them.  Note that solarized is set up
@@ -109,5 +114,5 @@ if filereadable(expand("~/.vim/custom_vimrc"))
     source ~/.vim/custom_vimrc
 endif
 
-" Grammalecte
-let g:grammalecte_cli_py='/usr/bin/grammalecte-cli.py'
+" Grammalecte see https://github.com/dpelle/vim-Grammalecte
+"let g:grammalecte_cli_py='/usr/bin/grammalecte-cli.py'

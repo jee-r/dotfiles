@@ -1,4 +1,8 @@
-## Grammalect
+# Dotfiles
+My Dotfiles :)
+
+## Vim 
+### Grammalect
 check the latest version on this [page](https://dicollecte.org/?download_div)
 
 ```
