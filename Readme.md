@@ -1,6 +1,14 @@
 # Dotfiles
 My Dotfiles :)
 
+## ZSH
+After installing oh-my-zsh
+```
+mv ~/.zshrc ~/.zshrc_old
+ln -s /full/path/of/dotfiles_repo/zshr ~/.zshrc
+```
+
+... Todo
 ## Vim 
 ### Grammalect
 check the latest version on this [page](https://dicollecte.org/?download_div)
