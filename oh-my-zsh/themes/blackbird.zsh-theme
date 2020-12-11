@@ -3,7 +3,7 @@ user_color_and_host() {
   then
     echo "%{$fg[yellow]%}[%{$reset_color%}%{$fg_bold[yellow]%}%n%{$reset_color%}%{$fg_bold[yellow]%}@%{$fg_bold[yellow]%}%m%{$reset_color%}%{$fg[yellow]%}]%{$reset_color%}"
   else
-    echo "%{$fg[black]%}[%{$reset_color%}%{$fg[yellow]%}%n%{$reset_color%}%{$fg[black]%}@%{$fg_bold[white]%}%m%{$reset_color%}%{$fg[black]%}]%{$reset_color%}"
+    echo "%{$fg[black]%}[%{$reset_color%}%{$fg[green]%}%n%{$reset_color%}%{$fg[black]%}@%{$fg_bold[white]%}%m%{$reset_color%}%{$fg[black]%}]%{$reset_color%}"
   fi
 }
 
@@ -20,4 +20,4 @@ git_custom_status() {
   fi
 }
 
-PROMPT='$(user_color_and_host)$(git_custom_status)%{$ft[black]%}[%~% ]%B$%b%{$reset_color%} '
+PROMPT='$(user_color_and_host)$(git_custom_status)%{$fg[white]%}(%{$reset_color%}%{$fg[black]%}%~%{$reset_color%}%{$fg[white]%})%{$reset_color%}%{$fg[black]%}%B⊷ %b%{$reset_color%} '
