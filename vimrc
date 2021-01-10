@@ -10,19 +10,6 @@
 " Desc: simple vim config for server, without any plugins.
 "==========================================
 
-"Plugin"
-" Install vim-plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-endif
-
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
-
 " leader
 let mapleader = ','
 let g:mapleader = ','
@@ -67,7 +54,7 @@ set scrolloff=7                 " keep 3 lines when scrolling
 
 " show
 set ruler                       " show the current row and column
-set nonumber                    " show line numbers
+set number                      " show line numbers
 set nowrap
 set showcmd                     " display incomplete commands
 set showmode                    " display current modes
@@ -141,33 +128,52 @@ endif
 " set mouse=a
 
 "PLUGIN"
-
+ 
 " Install vim-plug if not found
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim                                                                                                                         
+endif
+           
+" Run PlugInstall if there are missing plugins
+    autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    \| PlugInstall --sync | source $MYVIMRC
+    \| endif
+              
+               
+call plug#begin('~/.vim/plugged')
+                
+" install polyglot if vim 8 
+if v:version > 800
+    Plug 'sheerun/vim-polyglot'
 endif
 
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
+" https://github.com/phanviet/vim-monokai-pro
+" Plug 'phanviet/vim-monokai-pro'
 
-
-call plug#begin()
-
-Plug 'sheerun/vim-polyglot'
-Plug 'phanviet/vim-monokai-pro'
-
+" install monkai-pro if termguicolors is available
+if (has("termguicolors"))
+     Plug 'phanviet/vim-monokai-pro'
+endif
+ 
 call plug#end()
 
 
 " ============================ theme and status line ============================
 
-" theme
-set termguicolors
-set background=dark
-colorscheme monokai_pro
+" theme 
+if (has("termguicolors"))
+    set termguicolors
+    set background=dark
+    colorscheme monokai_pro
+else
+    if empty(glob('~/.vim/colors/monokai.vim'))
+         silent !curl -fLo ~/.vim/colors/monokai.vim --create-dirs
+        \ https://github.com/sickill/vim-monokai/raw/master/colors/monokai.vim
+        colorscheme monokai
+        let g:rehash256 = 1
+    endif
+endif
 
 " set mark column color
 hi! link SignColumn   LineNr
