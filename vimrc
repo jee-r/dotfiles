@@ -1,14 +1,15 @@
-"==========================================
-" ProjectLink: https://github.com/wklken/vim-for-server
-" Author:  wklken
-" Version: 0.2
-" Email: wklken@yeah.net
-" BlogPost: http://www.wklken.me
-" Donation: http://www.wklken.me/pages/donation.html
-" ReadMe: README.md
-" Last_modify: 2015-07-07
-" Desc: simple vim config for server, without any plugins.
-"==========================================
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" ProjectLink: https://jeer.fr/dotfiles 
+" Description: simple vim config for my use.
+" Maintainer: Jee
+" Email: jee@jeer.fr
+" Version: 0.1
+" Last_modify: 2021-02-08
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Global Config
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " leader
 let mapleader = ','
@@ -26,7 +27,6 @@ filetype on
 filetype plugin on
 filetype indent on
 
-
 " base
 set nocompatible                " don't bother with vi compatibility
 set autoread                    " reload files when changed on disk, i.e. via `git checkout`
@@ -42,32 +42,27 @@ set visualbell t_vb=            " turn off error beep/flash
 set t_vb=
 set tm=500
 
-
 " show location
-set cursorcolumn
-set cursorline
-
+set nocursorcolumn
+set nocursorline
 
 " movement
 set scrolloff=7                 " keep 3 lines when scrolling
 
-
 " show
 set ruler                       " show the current row and column
-set number                      " show line numbers
+set nonumber                    " show line numbers
 set nowrap
 set showcmd                     " display incomplete commands
 set showmode                    " display current modes
 set showmatch                   " jump to matches when entering parentheses
 set matchtime=2                 " tenths of a second to show the matching parenthesis
 
-
 " search
 set hlsearch                    " highlight searches
 set incsearch                   " do incremental searching, search as you type
 set ignorecase                  " ignore case when searching
 set smartcase                   " no ignorecase if Uppercase char present
-
 
 " tab
 set expandtab                   " expand tabs to spaces
@@ -109,7 +104,8 @@ set formatoptions+=B
 set selection=inclusive
 set selectmode=mouse,key
 
-set completeopt=longest,menu
+"set complete+=kspell
+set completeopt=menuone,longest
 set wildmenu                           " show a navigable menu for tab completion"
 set wildmode=longest,list,full
 set wildignore=*.o,*~,*.pyc,*.class
@@ -127,53 +123,57 @@ endif
 " Enable basic mouse behavior such as resizing buffers.
 " set mouse=a
 
-"PLUGIN"
- 
-" Install vim-plug if not found
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" PLUGINS"
+""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Install vim-plug if not found                                                                                                                                                               
 if empty(glob('~/.vim/autoload/plug.vim'))
     silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim                                                                                                                         
-endif
-           
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim                                                                                                                     
+endif                                    
+
 " Run PlugInstall if there are missing plugins
-    autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-    \| PlugInstall --sync | source $MYVIMRC
-    \| endif
-              
-               
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+     \| PlugInstall --sync | source $MYVIMRC
+\| endif                             
+
+
 call plug#begin('~/.vim/plugged')
-                
-" install polyglot if vim 8 
-if v:version > 800
-    Plug 'sheerun/vim-polyglot'
-endif
+                                
+  " install polyglot if vim 8 nguage Server
+  if v:version > 800              
+      Plug 'sheerun/vim-polyglot' 
+  endif          
+  
+  " https://github.com/phanviet/vim-monokai-pro
+  " Plug 'phanviet/vim-monokai-pro'
+  " install monkai-pro if termguicolors is available
+  if (has("termguicolors"))           
+       Plug 'phanviet/vim-monokai-pro'
+  endif          
+                 
+call plug#end()   
 
-" https://github.com/phanviet/vim-monokai-pro
-" Plug 'phanviet/vim-monokai-pro'
 
-" install monkai-pro if termguicolors is available
-if (has("termguicolors"))
-     Plug 'phanviet/vim-monokai-pro'
-endif
- 
-call plug#end()
-
-
-" ============================ theme and status line ============================
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" THEME and UI
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " theme 
+
 if (has("termguicolors"))
     set termguicolors
     set background=dark
     colorscheme monokai_pro
-else
+else   
     if empty(glob('~/.vim/colors/monokai.vim'))
          silent !curl -fLo ~/.vim/colors/monokai.vim --create-dirs
         \ https://github.com/sickill/vim-monokai/raw/master/colors/monokai.vim
         colorscheme monokai
         let g:rehash256 = 1
-    endif
-endif
+    endif     
+endif  
 
 " set mark column color
 hi! link SignColumn   LineNr
@@ -184,8 +184,9 @@ hi! link ShowMarksHLu DiffChange
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 set laststatus=2   " Always show the status line - use 2 lines for the status bar
 
-
-" ============================ specific file type ===========================
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" FILETYPE
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 autocmd FileType python set tabstop=4 shiftwidth=4 expandtab ai
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2 expandtab ai
@@ -217,7 +218,9 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-" ============================ key map ============================
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" key map
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 nnoremap k gk
 nnoremap gk k
@@ -238,7 +241,7 @@ set pastetoggle=<F5>            "    when in insert mode, press <F5> to go to
 au InsertLeave * set nopaste
 nnoremap <F6> :exec exists('syntax_on') ? 'syn off' : 'syn on'<CR>
 
-" kj 替换 Esc
+" kj Esc
 inoremap kj <Esc>
 
 " Quickly close the current window
@@ -272,16 +275,12 @@ nnoremap <silent> g* g*zz
 " remove highlight
 noremap <silent><leader>/ :nohls<CR>
 
-"Reselect visual block after indent/outdent.调整缩进后自动选中，方便再次操作
+"Reselect visual block after indent/outdent.
 vnoremap < <gv
 vnoremap > >gv
 
 " y$ -> Y Make Y behave like other capitals
 map Y y$
-
-"Map ; to : and save a million keystrokes
-" ex mode commands made easy 用于快速进入命令行
-nnoremap ; :
 
 " Shift+H goto head of the line, Shift+L goto end of the line
 nnoremap H ^
@@ -290,8 +289,20 @@ nnoremap L $
 " save
 cmap w!! w !sudo tee >/dev/null %
 
-" command mode, ctrl-a to head， ctrl-e to tail
+" command mode, ctrl-a to head ctrl-e to tail
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
 cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
+
+" Navigate the complete menu items like CTRL+n / CTRL+p would.
+inoremap <expr> <Down> pumvisible() ? "<C-n>" :"<Down>"
+inoremap <expr> <Up> pumvisible() ? "<C-p>" : "<Up>"
+
+" Select the complete menu item like CTRL+y would.
+inoremap <expr> <Right> pumvisible() ? "<C-y>" : "<Right>"
+inoremap <expr> <CR> pumvisible() ? "<C-y>" :"<CR>"
+
+" Cancel the complete menu item like CTRL+e would.
+inoremap <expr> <Left> pumvisible() ? "<C-e>" : "<Left>"
+
