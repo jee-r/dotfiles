@@ -51,7 +51,6 @@ examples:
    UA="Mozilla/5.0 (PlayStation 4 5.55) AppleWebKit/601.2 (KHTML, like Gecko)" pb uguu /tmp/x
 
 EOF
-    exit 0
   }
   
   ARG="${2:-/dev/stdin}"
