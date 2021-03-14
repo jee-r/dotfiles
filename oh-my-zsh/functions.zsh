@@ -21,3 +21,12 @@ proxy2 () {
 event_tester() {
   xev | awk -F'[ )]+' '/^KeyPress/ { a[NR+2] } NR in a { printf "%-3s %s\n", $5, $8 }'
 }
+
+# reload Gtk theme on Gnome
+
+reload_gtk_theme() {
+  theme=$(gsettings get org.gnome.desktop.interface gtk-theme)
+  gsettings set org.gnome.desktop.interface gtk-theme ''
+  sleep 1
+  gsettings set org.gnome.desktop.interface gtk-theme $theme
+}
