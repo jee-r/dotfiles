@@ -1,0 +1,16 @@
+# Theme
+ZSH_THEME="blackbird"
+
+# Custom directory
+ZSH_CUSTOM=~/dotfiles/oh-my-zsh/
+
+# Vim as default editor
+export EDITOR='vim'
+
+# usefull for docker (--user argument) 
+export UID=$(id -u)
+export GID=$(id -g)
+
+# Avoid background color for ls cmd
+export LS_COLORS=$LS_COLORS:'tw=00;33:ow=01;33:'
+
