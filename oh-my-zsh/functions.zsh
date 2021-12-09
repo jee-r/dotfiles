@@ -1,11 +1,12 @@
 # Proxy
-proxy1 () {
-    /usr/sbin/autossh -M 0 -f -N -D "$proxy1_localport" -p "$proxy1_sshport" "$proxy1_user"@"$proxy1_IP"
-}
+#proxy_socks () {
+#    /usr/sbin/autossh -M 0 -f -N -D "$proxy_localport" -p "$proxy_sshport" "$proxy_user"@"$proxy_IP"
+#}
+#
+#proxy2 () {
+#    /usr/sbin/autossh -M 0 -f -N -D "$proxy2_localport" -p "$proxy2_sshport" "$proxy2_user"@"$proxy2_IP"
+#}
 
-proxy2 () {
-    /usr/sbin/autossh -M 0 -f -N -D "$proxy2_localport" -p "$proxy2_sshport" "$proxy2_user"@"$proxy2_IP"
-}
 
 ## Irssi with proxy
 #irssi_proxy () {
