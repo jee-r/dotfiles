@@ -74,6 +74,7 @@ set autoindent smartindent shiftround
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4                " insert mode tab and backspace use 4 spaces
+set indentkeys-=0#              " don't autoindent when you comment a line
 
 " NOT SUPPORT
 " fold
