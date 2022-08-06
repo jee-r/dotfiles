@@ -3,12 +3,12 @@ user_color_and_host() {
   then
     echo "%{$fg[yellow]%}[%{$reset_color%}%{$fg_bold[yellow]%}%n%{$reset_color%}%{$fg_bold[yellow]%}@%{$fg_bold[yellow]%}%m%{$reset_color%}%{$fg[yellow]%}]%{$reset_color%}"
   else
-    echo "%{$fg[black]%}[%{$reset_color%}%{$fg[green]%}%n%{$reset_color%}%{$fg[black]%}@%{$fg_bold[white]%}%m%{$reset_color%}%{$fg[black]%}]%{$reset_color%}"
+    echo "%{$fg[gray]%}[%{$reset_color%}%{$fg[green]%}%n%{$reset_color%}%{$fg[gray]%}@%{$fg_bold[white]%}%m%{$reset_color%}%{$fg[gray]%}]%{$reset_color%}"
   fi
 }
 
-ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[black]%}[%{$reset_color%}"
-ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[black]%}]%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg[gray]%}[%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_SUFFIX="%{$fg[gray]%}]%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[red]%}•%{$reset_color%}"
 ZSH_THEME_GIT_PROMPT_CLEAN=""
 
@@ -20,4 +20,4 @@ git_custom_status() {
   fi
 }
 
-PROMPT='$(user_color_and_host)$(git_custom_status)%{$fg[white]%}(%{$reset_color%}%{$fg[black]%}%~%{$reset_color%}%{$fg[white]%})%{$reset_color%}%{$fg[black]%}%B⊷ %b%{$reset_color%} '
+PROMPT='$(user_color_and_host)$(git_custom_status)%{$fg[white]%}(%{$reset_color%}%{$fg[gray]%}%~%{$reset_color%}%{$fg[white]%})%{$reset_color%}%{$fg[gray]%}%B⊷ %b%{$reset_color%} '
