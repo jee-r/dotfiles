@@ -2,12 +2,14 @@
 
 version: "1"
 
-{{ $sources := list "home" "root" "sys" "pkg-list" }}
-
-{{ $healthcheck_key := "API_KEY" }}
-{{ $healthcheck_url := "https://healthchecks.io/ping" }}
 
 {{ $backends := map "backend1" `rclone:backend1:/backup` "backen1" `rclone:backend2:/Backup/example` }}
+
+{{ $sources := list "home" "root" "sys" "pkg-list" }}
+
+# HealthCheck
+{{ $healthcheck_key := "API_KEY" }}
+{{ $healthcheck_url := "https://healthchecks.io/ping" }}
 
 # Get installed packages
 # Debian
@@ -53,13 +55,6 @@ global:
   # and the option "force-inactive-lock" is enabled in the profile.
   restic-stale-lock-age: 3h
 
-
-{{ define "home" }}
-  backup:
-    source:
-      - "/home"
-{{ end}}
-
 groups:
   all:
 {{ range $backend_name, $backends_repo := $backends }}
@@ -77,7 +72,6 @@ groups:
     - {{ $source }}-{{ $backend_name }}
   {{ end }}
 {{ end }}
-
 
 {{ range $backend_name, $backends_repo := $backends }}
 {{ $backend_name }}:
@@ -197,4 +191,3 @@ base:
         headers:
           - name: Content-Type
             value: "text/plain; charset=UTF-8"
-
