@@ -4,8 +4,8 @@ version: "1"
 
 {{ $sources := list "home" "root" "sys" "pkg-list" }}
 
-{{ $healthcheck_key := "ChangeMe" }}
-{{ $healthcheck_url := "ChangeMe" }}
+{{ $healthcheck_key := "API_KEY" }}
+{{ $healthcheck_url := "https://healthchecks.io/ping" }}
 
 {{ $backends := map "backend1" `rclone:backend1:/backup` "backen1" `rclone:backend2:/Backup/example` }}
 
@@ -137,13 +137,13 @@ base:
 {{ template "exclude_base" . }}
     send-before:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}/start"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}/start"
     send-after:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}"
     send-after-fail:
       - method: POST
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}/fail"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/backup-{{ .Profile.Name }}/fail"
         body: "${ERROR}\n\n${ERROR_STDERR}"
         headers:
           - name: Content-Type
@@ -169,13 +169,13 @@ base:
     schedule-lock-wait: 1h
     send-before:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}/start"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}/start"
     send-after:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}"
     send-after-fail:
       - method: POST
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}/fail"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/prune-{{ .Profile.Name }}/fail"
         body: "${ERROR}\n\n${ERROR_STDERR}"
         headers:
           - name: Content-Type
@@ -186,13 +186,13 @@ base:
     schedule-lock-wait: 1h
     send-before:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/check-{{ .Profile.Name }}/start"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/check-{{ .Profile.Name }}/start"
     send-after:
       - method: HEAD
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/check-{{ .Profile.Name }}"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/check-{{ .Profile.Name }}"
     send-after-fail:
       - method: POST
-        url: "https://cron.roflcopter.fr/ping/{{ $healthcheck_key }}/check-{{ .Profile.Name }}/fail"
+        url: "{{ $healthcheck_url }}/{{ $healthcheck_key }}/check-{{ .Profile.Name }}/fail"
         body: "${ERROR}\n\n${ERROR_STDERR}"
         headers:
           - name: Content-Type
