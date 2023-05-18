@@ -124,9 +124,6 @@ base:
   force-inactive-lock: true  
   backup:
     verbose: true
-    tag:
-      - kreatin3
-      - laptop
     one-file-system: true
     exclude-caches: true
     exclude: 
