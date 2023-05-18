@@ -58,7 +58,6 @@ global:
 groups:
   all:
 {{ range $source := $sources }}
-  {{ $source }}:
   {{ range $backend_name, $backend_repo := $backends }}
     - {{ $source }}-{{ $backend_name }}
   {{ end }}
