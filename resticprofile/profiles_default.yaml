@@ -57,8 +57,11 @@ global:
 
 groups:
   all:
-{{ range $backend_name, $backends_repo := $backends }}
-    - to-{{ $backend_name }}
+{{ range $source := $sources }}
+  {{ $source }}:
+  {{ range $backend_name, $backend_repo := $backends }}
+    - {{ $source }}-{{ $backend_name }}
+  {{ end }}
 {{ end }}
 {{ range $backend_name, $backends_repo := $backends }}
   to-{{ $backend_name }}:
